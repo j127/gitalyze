@@ -5,6 +5,9 @@
   "bin": {
     "gitalyze": "src/index.ts"
   },
+  "scripts": {
+    "format": "prettier --write '**/*.{md,mdx,ts,js,mjs,cjs,jsx,tsx,yaml,yml,json,html,css,scss,vue,astro}'"
+  },
   "devDependencies": {
     "@types/bun": "latest",
     "prettier": "^3.8.3",
