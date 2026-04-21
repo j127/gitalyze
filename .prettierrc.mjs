@@ -7,12 +7,5 @@ export default {
   trailingComma: "es5",
   arrowParens: "always",
   plugins: [],
-  overrides: [
-    {
-      files: "*.astro",
-      options: {
-        parser: "astro",
-      },
-    },
-  ],
+  overrides: [],
 };
