@@ -6,7 +6,7 @@ export default {
   tabWidth: 2,
   trailingComma: "es5",
   arrowParens: "always",
-  plugins: ["prettier-plugin-astro", "prettier-plugin-tailwindcss"],
+  plugins: [],
   overrides: [
     {
       files: "*.astro",
