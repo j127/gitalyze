@@ -48,7 +48,7 @@ function hasGnuplot(): boolean {
 
 async function plotBarChart(
   title: string,
-  data: { label: string; value: number }[],
+  data: { label: string; value: number }[]
 ) {
   if (!hasGnuplot() || data.length === 0) return;
 
@@ -84,7 +84,7 @@ plot "${dataFile}" using 1:2 with boxes
 
 async function plotTimeSeries(
   title: string,
-  data: { date: string; value: number }[],
+  data: { date: string; value: number }[]
 ) {
   if (!hasGnuplot() || data.length === 0) return;
 
@@ -120,11 +120,11 @@ plot "${dataFile}" using 1:2 with linespoints
 async function codeChurnHotspots() {
   heading(
     "Code Churn Hotspots",
-    "Most frequently modified files in the past year. High churn may indicate\nproblematic code the team fears touching, or areas under active development.",
+    "Most frequently modified files in the past year. High churn may indicate\nproblematic code the team fears touching, or areas under active development."
   );
 
   const raw = await shell(
-    `git log --format=format: --name-only --since="1 year ago" | grep -v '^$' | sort | uniq -c | sort -nr | head -20`,
+    `git log --format=format: --name-only --since="1 year ago" | grep -v '^$' | sort | uniq -c | sort -nr | head -20`
   );
 
   if (!raw) {
@@ -133,12 +133,14 @@ async function codeChurnHotspots() {
   }
 
   const lines = raw.split("\n").filter(Boolean);
-  const parsed = lines.map((line) => {
-    const match = line.trim().match(/^(\d+)\s+(.+)$/);
-    return match
-      ? { label: match[2]!, value: parseInt(match[1]!, 10) }
-      : null;
-  }).filter((x): x is { label: string; value: number } => x !== null);
+  const parsed = lines
+    .map((line) => {
+      const match = line.trim().match(/^(\d+)\s+(.+)$/);
+      return match
+        ? { label: match[2]!, value: parseInt(match[1]!, 10) }
+        : null;
+    })
+    .filter((x): x is { label: string; value: number } => x !== null);
 
   for (const { value, label } of parsed) {
     console.log(`  \x1b[1m${String(value).padStart(6)}\x1b[0m  ${label}`);
@@ -150,7 +152,7 @@ async function codeChurnHotspots() {
 async function contributorActivity() {
   heading(
     "Contributor Activity (All Time)",
-    'All contributors ranked by commit count. Reveals the "bus factor" — whether\nkey knowledge is concentrated in one person.',
+    'All contributors ranked by commit count. Reveals the "bus factor" — whether\nkey knowledge is concentrated in one person.'
   );
 
   const raw = await run(["git", "shortlog", "-sn", "--no-merges"]);
@@ -161,12 +163,14 @@ async function contributorActivity() {
   }
 
   const lines = raw.split("\n").filter(Boolean);
-  const parsed = lines.map((line) => {
-    const match = line.trim().match(/^(\d+)\s+(.+)$/);
-    return match
-      ? { label: match[2]!, value: parseInt(match[1]!, 10) }
-      : null;
-  }).filter((x): x is { label: string; value: number } => x !== null);
+  const parsed = lines
+    .map((line) => {
+      const match = line.trim().match(/^(\d+)\s+(.+)$/);
+      return match
+        ? { label: match[2]!, value: parseInt(match[1]!, 10) }
+        : null;
+    })
+    .filter((x): x is { label: string; value: number } => x !== null);
 
   for (const { value, label } of parsed) {
     console.log(`  \x1b[1m${String(value).padStart(6)}\x1b[0m  ${label}`);
@@ -178,7 +182,7 @@ async function contributorActivity() {
 async function recentContributorActivity() {
   heading(
     "Recent Contributor Activity (6 months)",
-    "Active contributors in the last 6 months. Shows whether the original team\nstill maintains the codebase or if new people are driving development.",
+    "Active contributors in the last 6 months. Shows whether the original team\nstill maintains the codebase or if new people are driving development."
   );
 
   const raw = await run([
@@ -195,12 +199,14 @@ async function recentContributorActivity() {
   }
 
   const lines = raw.split("\n").filter(Boolean);
-  const parsed = lines.map((line) => {
-    const match = line.trim().match(/^(\d+)\s+(.+)$/);
-    return match
-      ? { label: match[2]!, value: parseInt(match[1]!, 10) }
-      : null;
-  }).filter((x): x is { label: string; value: number } => x !== null);
+  const parsed = lines
+    .map((line) => {
+      const match = line.trim().match(/^(\d+)\s+(.+)$/);
+      return match
+        ? { label: match[2]!, value: parseInt(match[1]!, 10) }
+        : null;
+    })
+    .filter((x): x is { label: string; value: number } => x !== null);
 
   for (const { value, label } of parsed) {
     console.log(`  \x1b[1m${String(value).padStart(6)}\x1b[0m  ${label}`);
@@ -212,11 +218,11 @@ async function recentContributorActivity() {
 async function bugHotspots() {
   heading(
     "Bug Hotspots",
-    "Files with the most bug-related commits. Combined with churn data, these\nhighlight high-risk code that repeatedly breaks and gets patched.",
+    "Files with the most bug-related commits. Combined with churn data, these\nhighlight high-risk code that repeatedly breaks and gets patched."
   );
 
   const raw = await shell(
-    `git log -i -E --grep="fix|bug|broken" --name-only --format='' | grep -v '^$' | sort | uniq -c | sort -nr | head -20`,
+    `git log -i -E --grep="fix|bug|broken" --name-only --format='' | grep -v '^$' | sort | uniq -c | sort -nr | head -20`
   );
 
   if (!raw) {
@@ -225,12 +231,14 @@ async function bugHotspots() {
   }
 
   const lines = raw.split("\n").filter(Boolean);
-  const parsed = lines.map((line) => {
-    const match = line.trim().match(/^(\d+)\s+(.+)$/);
-    return match
-      ? { label: match[2]!, value: parseInt(match[1]!, 10) }
-      : null;
-  }).filter((x): x is { label: string; value: number } => x !== null);
+  const parsed = lines
+    .map((line) => {
+      const match = line.trim().match(/^(\d+)\s+(.+)$/);
+      return match
+        ? { label: match[2]!, value: parseInt(match[1]!, 10) }
+        : null;
+    })
+    .filter((x): x is { label: string; value: number } => x !== null);
 
   for (const { value, label } of parsed) {
     console.log(`  \x1b[1m${String(value).padStart(6)}\x1b[0m  ${label}`);
@@ -242,11 +250,11 @@ async function bugHotspots() {
 async function developmentVelocity() {
   heading(
     "Development Velocity",
-    "Monthly commit frequency over the repository's history. Reveals whether the\nteam maintains steady momentum or shows declining/accelerating patterns.",
+    "Monthly commit frequency over the repository's history. Reveals whether the\nteam maintains steady momentum or shows declining/accelerating patterns."
   );
 
   const raw = await shell(
-    `git log --format='%ad' --date=format:'%Y-%m' | sort | uniq -c | sort -k2`,
+    `git log --format='%ad' --date=format:'%Y-%m' | sort | uniq -c | sort -k2`
   );
 
   if (!raw) {
@@ -255,17 +263,17 @@ async function developmentVelocity() {
   }
 
   const lines = raw.split("\n").filter(Boolean);
-  const parsed = lines.map((line) => {
-    const match = line.trim().match(/^(\d+)\s+(\d{4}-\d{2})$/);
-    return match
-      ? { date: match[2]!, value: parseInt(match[1]!, 10) }
-      : null;
-  }).filter((x): x is { date: string; value: number } => x !== null);
+  const parsed = lines
+    .map((line) => {
+      const match = line.trim().match(/^(\d+)\s+(\d{4}-\d{2})$/);
+      return match ? { date: match[2]!, value: parseInt(match[1]!, 10) } : null;
+    })
+    .filter((x): x is { date: string; value: number } => x !== null);
 
   for (const { value, date } of parsed) {
     const bar = "█".repeat(Math.min(value, 60));
     console.log(
-      `  \x1b[2m${date}\x1b[0m  \x1b[1m${String(value).padStart(5)}\x1b[0m  \x1b[32m${bar}\x1b[0m`,
+      `  \x1b[2m${date}\x1b[0m  \x1b[1m${String(value).padStart(5)}\x1b[0m  \x1b[32m${bar}\x1b[0m`
     );
   }
 
@@ -275,11 +283,11 @@ async function developmentVelocity() {
 async function firefightingFrequency() {
   heading(
     "Firefighting Frequency (past year)",
-    "Reverts, hotfixes, and emergency commits in the past year. Frequent reverts\nindicate deployment anxiety and deeper process issues.",
+    "Reverts, hotfixes, and emergency commits in the past year. Frequent reverts\nindicate deployment anxiety and deeper process issues."
   );
 
   const raw = await shell(
-    `git log --oneline --since="1 year ago" | grep -iE 'revert|hotfix|emergency|rollback'`,
+    `git log --oneline --since="1 year ago" | grep -iE 'revert|hotfix|emergency|rollback'`
   );
 
   if (!raw) {
@@ -288,7 +296,9 @@ async function firefightingFrequency() {
   }
 
   const lines = raw.split("\n").filter(Boolean);
-  console.log(`  Found \x1b[1;31m${lines.length}\x1b[0m firefighting commits:\n`);
+  console.log(
+    `  Found \x1b[1;31m${lines.length}\x1b[0m firefighting commits:\n`
+  );
 
   for (const line of lines) {
     console.log(`  \x1b[31m•\x1b[0m ${line}`);
@@ -302,7 +312,7 @@ async function main() {
   const gitCheck = Bun.spawnSync(["git", "rev-parse", "--is-inside-work-tree"]);
   if (gitCheck.exitCode !== 0) {
     console.error(
-      "\x1b[1;31mError:\x1b[0m Not inside a git repository. Run this from a git repo.",
+      "\x1b[1;31mError:\x1b[0m Not inside a git repository. Run this from a git repo."
     );
     process.exit(1);
   }
@@ -310,17 +320,25 @@ async function main() {
   const repoName = await run(["git", "rev-parse", "--show-toplevel"]);
   const name = repoName.split("/").pop() ?? "unknown";
 
-  console.log(`\n\x1b[1;35m╔══════════════════════════════════════════════════════════════╗\x1b[0m`);
-  console.log(`\x1b[1;35m║\x1b[0m  \x1b[1mgitalyze\x1b[0m — Git Repository Analysis                         \x1b[1;35m║\x1b[0m`);
-  console.log(`\x1b[1;35m║\x1b[0m  Repository: \x1b[1m${name.padEnd(47)}\x1b[0m\x1b[1;35m║\x1b[0m`);
-  console.log(`\x1b[1;35m╚══════════════════════════════════════════════════════════════╝\x1b[0m`);
+  console.log(
+    `\n\x1b[1;35m╔══════════════════════════════════════════════════════════════╗\x1b[0m`
+  );
+  console.log(
+    `\x1b[1;35m║\x1b[0m  \x1b[1mgitalyze\x1b[0m — Git Repository Analysis                         \x1b[1;35m║\x1b[0m`
+  );
+  console.log(
+    `\x1b[1;35m║\x1b[0m  Repository: \x1b[1m${name.padEnd(47)}\x1b[0m\x1b[1;35m║\x1b[0m`
+  );
+  console.log(
+    `\x1b[1;35m╚══════════════════════════════════════════════════════════════╝\x1b[0m`
+  );
 
   if (!hasGnuplot()) {
     console.log(
-      `\n\x1b[33m⚠  gnuplot not found — charts will be skipped.\x1b[0m`,
+      `\n\x1b[33m⚠  gnuplot not found — charts will be skipped.\x1b[0m`
     );
     console.log(
-      `\x1b[2m   Install with: brew install gnuplot (macOS) or apt install gnuplot (Linux)\x1b[0m`,
+      `\x1b[2m   Install with: brew install gnuplot (macOS) or apt install gnuplot (Linux)\x1b[0m`
     );
   }
 
@@ -332,7 +350,7 @@ async function main() {
   await firefightingFrequency();
 
   console.log(
-    `\n\x1b[1;35m── Analysis complete ───────────────────────────────────────────\x1b[0m\n`,
+    `\n\x1b[1;35m── Analysis complete ───────────────────────────────────────────\x1b[0m\n`
   );
 }
 
