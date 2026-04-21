@@ -1,8 +1,10 @@
 {
   "name": "gitalyze",
-  "module": "index.ts",
+  "module": "src/index.ts",
   "type": "module",
-  "private": true,
+  "bin": {
+    "gitalyze": "src/index.ts"
+  },
   "devDependencies": {
     "@types/bun": "latest",
     "prettier": "^3.8.3",
